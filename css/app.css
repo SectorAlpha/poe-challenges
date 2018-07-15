@@ -79,10 +79,11 @@ footer {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 40px;
+	height: 60px;
 	padding: 10px;
 	z-index: 1;
 	background: #121212;
+    font-size: 0.8em;
 }
 .left {
     float: left;
