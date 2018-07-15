@@ -1,6 +1,6 @@
-Dark Souls Challenge Run Generator
-====================
+Path of Exile Challenge Mode Generator
+====
 
-Try it - http://darksouls.ianlamb.com/challenges/
+Achieve the dream of the Truly Ethical Path of Exile experience.
 
-Challenge run generator/randomizer for Dark Souls. A fun way to replay the game in a new way. Challenge your friends!
+Try it at - [Link]

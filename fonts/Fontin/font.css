@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'Fontin';
+	src: url('./Fontin-SmallCaps.otf');
+	src: local('Fontin'), url('./Fontin-SmallCaps.otf') format('OpenType');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_1045">Text with this font applied</p> */
+.FontinText {
+	font-family: 'Fontin' !important;
+}
+
+/* A font by Jos Buivenga (exljbris) -> www.exljbris.com */

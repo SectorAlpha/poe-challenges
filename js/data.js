@@ -1,424 +1,425 @@
-var difficulties = 
+var difficulties =
 	{
-		4:'Casual',
-		12:'Experienced',
-		20:'Veteran',
-		28:'Master',
-		36:'Masochist'
+		10:'Normal',
+		18:'Harder',
+		32:'Truly Ethical'
 	}
 
-var modifiers = [
+var challenges = [
 	{
-		'id':'no-shields',
-		'name':'No Shields',
-		'difficulty':8,
-		'description':'Who blocks anyway? Rolls for days!',
-		'types':['lhw']
+		'id':'no-offhand',
+		'name':'One-Armed Exile',
+		'difficulty':6,
+		'incompatibilities':[],
+		'description':'One-handers only, no shield, no dual-wielding',
+		'types':['weapon-restriction']
 	},
 	{
-		'id':'no-spells',
-		'name':'No Spells',
+		'id':'unarmed',
+		'name':'Unarmed',
+		'difficulty':15,
+		'incompatibilities':[],
+		'description':'A quiver is okay.',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'ggo',
+		'name':'Green Gems Only',
+		'difficulty':6,
+		'incompatibilities':['no-craft'],
+		'description':'Includes both active and support gems',
+		'types':['gem-colour']
+	},
+	{
+		'id':'rgo',
+		'name':'Red Gems Only',
+		'difficulty':8,
+		'incompatibilities':['spell-go','no-craft'],
+		'description':'Includes both active and support gems',
+		'types':['gem-colour']
+	},
+	{
+		'id':'bgo',
+		'name':'Blue Gems Only',
 		'difficulty':4,
-		'description':'Shush.',
-		'types':['behaviour']
+		'incompatibilities':['attack-go','no-craft','nogemlvl'],
+		'description':'Includes both active and support gems',
+		'types':['gem-colour']
 	},
 	{
-		'id':'no-crits',
-		'name':'No Critical Hits',
+		'id':'spell-go',
+		'name':'Spell Gems Only',
+		'difficulty':6,
+		'incompatibilities':['rgo', 'nogemlvl'],
+		'description':'Only gems with the Spell tag, including both active and support gems',
+		'types':['gem-tag']
+	},
+	{
+		'id':'attack-go',
+		'name':'Attack Gems Only',
+		'difficulty':6,
+		'incompatibilities':['bgo'],
+		'description':'Only gems with the Attack tag, including both active and support gems',
+		'types':['gem-tag']
+	},
+	{
+		'id':'quest-go',
+		'name':'Quest Reward Gems Only',
 		'difficulty':8,
-		'description':'You may not backstap, parry-reposte or drop-attack an enemy. Fight them like a man!',
-		'types':['behaviour']
+		'incompatibilities':[],
+		'description':'Only gems from quest rewards. No buying or picking up more.',
+		'types':['gem-source']
 	},
 	{
-		'id':'naked',
-		'name':'Naked',
+		'id':'found-go',
+		'name':'Self Found Gems Only',
 		'difficulty':8,
-		'description':'Drop your gear soldier, you\'re going in your underwear!',
-		'types':['armour', 'naked']
+		'incompatibilities':[],
+		'description':'Only gems from drops. No buying more or using quest rewards.',
+		'types':['gem-source']
 	},
 	{
-		'id':'starting-equipment',
-		'name':'Starting Equipment Only',
-		'difficulty':4,
-		'description':'',
-		'types':['cosplay','armour','lhw','rhw']
+		'id':'nogemlvl',
+		'name':'No Gem Levels',
+		'difficulty':10,
+		'incompatibilities':['spell-go','bgo'],
+		'description':'Leave skill gems at the level you obtain them. No buying replacements.',
+		'types':['gem-level']
 	},
 	{
-		'id':'no-elemental',
-		'name':'No Elemental Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path must remain physical.',
-		'types':['upgrade','no-elemental']
-	},
-	{
-		'id':'weapon-up-lightning',
-		'name':'Lightning Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be lightning.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-fire',
-		'name':'Fire Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be fire.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-chaos',
-		'name':'Chaos Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be chaos.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-divine',
-		'name':'Divine Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be divine.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-magic',
-		'name':'Magic Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be magic.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-enchanted',
-		'name':'Enchanted Weapons',
-		'difficulty':2,
-		'description':'Your upgrade path after +5 must be enchanted.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-10',
-		'name':'+10 Weapon',
-		'difficulty':4,
-		'description':'Only upgrade weapons to +10. No elemental upgrades allowed.',
-		'types':['upgrade']
-	},
-	{
-		'id':'weapon-up-5',
-		'name':'+5 Weapon',
-		'difficulty':8,
-		'description':'Only upgrade weapons to +5. No elemental upgrades allowed.',
-		'types':['upgrade']
-	},
-	{
-		'id':'no-weapon-upgrades',
-		'name':'No Weapon Upgrades',
+		'id':'uio',
+		'name':'Gucci Hobo',
 		'difficulty':16,
-		'description':'',
-		'types':['upgrade']
+		'incompatibilities':[],
+		'description':'Unique items only, not including flasks',
+		'types':['equipment-rarity']
 	},
 	{
-		'id':'no-armor-upgrades',
-		'name':'No Armor Upgrades',
-		'difficulty':2,
-		'description':'',
-		'types':['upgrade', 'naked']
+		'id':'mio',
+		'name':'Magic Items Only',
+		'difficulty':10,
+		'incompatibilities':[],
+		'description':'The authentic alteration-farming experience',
+		'types':['equipment-rarity']
 	},
 	{
-		'id':'no-healing',
-		'name':'No Healing',
+		'id':'wio',
+		'name':'White Items Only',
+		'difficulty':24,
+		'incompatibilities':[],
+		'description':'Good luck.',
+		'types':['equipment-rarity']
+	},
+	{
+		'id':'3flaskmax',
+		'name':'Three Flask Maximum',
+		'difficulty':8,
+		'incompatibilities':[],
+		'description':'Use at most 3 flasks.',
+		'types':['flask-quantity']
+	},
+	{
+		'id':'2flaskmax',
+		'name':'Two Flask Maximum',
 		'difficulty':16,
-		'description':'You may not use Estus, Heal spells or Humanity. Bonfires are the only method allowed to restore HP.',
-		'types':['behaviour']
+		'incompatibilities':[],
+		'description':'Use at most 2 flasks.',
+		'types':['flask-quantity']
 	},
 	{
-		'id':'no-consumables',
-		'name':'No Consumables',
-		'difficulty':2,
-		'description':'You may not use any consumable items except for Estus Flask.',
-		'types':['item']
+		'id':'1flaskmax',
+		'name':'One Flask Maximum',
+		'difficulty':24,
+		'incompatibilities':[],
+		'description':'Just one flask!',
+		'types':['flask-quantity']
 	},
 	{
-		'id':'use-what-you-see',
-		'name':'Use What You See',
+		'id':'nuf',
+		'name':'No Utility Flasks',
 		'difficulty':8,
-		'description':'Any time you see an item within reach you must pick it up and use/equip it.',
-		'types':['cosplay','armour','lhw','rhw']
+		'incompatibilities':['ci-rush'],
+		'description':'They probably cause ulcers anyway.',
+		'types':['flask-type']
 	},
 	{
-		'id':'no-dodge',
-		'name':'No Dodge',
-		'difficulty':16,
-		'description':'',
-		'types':['behaviour']
+		'id':'nlf',
+		'name':'No Life Flasks',
+		'difficulty':20,
+		'incompatibilities':[],
+		'description':'They probably cause cancer anyway.',
+		'types':['flask-type']
 	},
 	{
-		'id':'no-master-key',
-		'name':'No Master Key',
-		'difficulty':2,
-		'description':'',
-		'types':['item']
+		'id':'6gearmax',
+		'name':'Six Equipment Maximum',
+		'difficulty':11,
+		'incompatibilities':[],
+		'description':'Equip at most six pieces of gear at once.',
+		'types':['equipment-quantity']
 	},
 	{
-		'id':'no-leveling',
-		'name':'No Leveling',
-		'difficulty':16,
-		'description':'',
-		'types':['level']
+		'id':'5gearmax',
+		'name':'Five Equipment Maximum',
+		'difficulty':15,
+		'incompatibilities':[],
+		'description':'Equip at most five pieces of gear at once.',
+		'types':['equipment-quantity']
 	},
 	{
-		'id':'max-level-10',
-		'name':'Max Level: SL10',
+		'id':'4gearmax',
+		'name':'Four Equipment Maximum',
+		'difficulty':19,
+		'incompatibilities':[],
+		'description':'Equip at most four pieces of gear at once.',
+		'types':['equipment-quantity']
+	},
+	{
+		'id':'buy-craft-easy',
+		'name':'Buy and Craft Only',
 		'difficulty':8,
-		'description':'',
-		'types':['level']
+		'incompatibilities':[],
+		'description':'Equip only gear bought from vendors and self-crafted.',
+		'types':['equipment-source']
 	},
 	{
-		'id':'max-level-20',
-		'name':'Max Level: SL20',
-		'difficulty':4,
-		'description':'',
-		'types':['level']
+		'id':'buy-craft-hard',
+		'name':'Buy and Craft (No Selling Items)',
+		'difficulty':14,
+		'incompatibilities':[],
+		'description':'Only pick up currency. Capitalism, ho!',
+		'types':['equipment-source']
 	},
 	{
-		'id':'max-level-30',
-		'name':'Max Level: SL30',
-		'difficulty':2,
-		'description':'',
-		'types':['level']
+		'id':'illiterate',
+		'name':'Illiterate Exile',
+		'difficulty':11,
+		'incompatibilities':[],
+		'description':'No using Wisdom Scrolls, Portal Scrolls or Books.',
+		'types':['equipment-source']
 	},
 	{
-		'id':'warrior',
-		'name':'Class: Warrior',
-		'difficulty':2,
-		'description':'Start your character as Warrior.',
-		'types':['class']
-	},
-	{
-		'id':'knight',
-		'name':'Class: Knight',
-		'difficulty':2,
-		'description':'Start your character as Knight.',
-		'types':['class']
-	},
-	{
-		'id':'wanderer',
-		'name':'Class: Wanderer',
-		'difficulty':2,
-		'description':'Start your character as Wanderer.',
-		'types':['class']
-	},
-	{
-		'id':'thief',
-		'name':'Class: Thief',
-		'difficulty':2,
-		'description':'Start your character as Thief.',
-		'types':['class']
-	},
-	{
-		'id':'bandit',
-		'name':'Class: Bandit',
-		'difficulty':2,
-		'description':'Start your character as Bandit.',
-		'types':['class']
-	},
-	{
-		'id':'hunter',
-		'name':'Class: Hunter',
-		'difficulty':2,
-		'description':'Start your character as Hunter.',
-		'types':['class']
-	},
-	{
-		'id':'sorcerer',
-		'name':'Class: Sorcerer',
-		'difficulty':2,
-		'description':'Start your character as Sorcerer.',
-		'types':['class']
-	},
-	{
-		'id':'pyromancer',
-		'name':'Class: Pyromancer',
-		'difficulty':2,
-		'description':'Start your character as Pyromancer.',
-		'types':['class']
-	},
-	{
-		'id':'cleric',
-		'name':'Class: Cleric',
-		'difficulty':2,
-		'description':'Start your character as Cleric.',
-		'types':['class']
-	},
-	{
-		'id':'deprived',
-		'name':'Class: Deprived',
-		'difficulty':2,
-		'description':'Start your character as Deprived.',
-		'types':['class']
-	},
-	{
-		'id':'solaire',
-		'name':'Cosplay: Solaire',
-		'difficulty':4,
-		'description':'As soon as you can, kill Solaire and adorn his equipment.',
-		'types':['cosplay','solaire','armour','lhw','rhw']
-	},
-	{
-		'id':'ninja',
-		'name':'Cosplay: Ninja',
-		'difficulty':4,
-		'description':'Start as the Thief class and only wear the thief armour set. As soon as you can, kill the Undead Male shop keeper and use his Uchigatana in both hands.',
-		'types':['cosplay','nina','armour','lhw','rhw','class']
-	},
-	{
-		'id':'spartan',
-		'name':'Cosplay: Spartan',
-		'difficulty':4,
-		'description':'Spears, Straight Swords, Round Shields, Leather and Brass armour are allowed. No chest piece and no elemental weapons.',
-		'types':['cosplay','spartan','no-elemental','armour','lhw','rhw']
-	},
-	{
-		'id':'straight-swords',
-		'name':'Weapon Type: Straight Swords',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'greatswords',
-		'name':'Weapon Type: Greatswords',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'ultra-greatswords',
-		'name':'Weapon Type: Ultra Greatswords',
-		'difficulty':2,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'curved-swords',
-		'name':'Weapon Type: Curved Swords',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'curved-greatswords',
-		'name':'Weapon Type: Curved Greatswords',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'thrusting-swords',
-		'name':'Weapon Type: Thrusting Swords',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'katanas',
-		'name':'Weapon Type: Katanas',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'axes',
-		'name':'Weapon Type: Axes',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'greataxes',
-		'name':'Weapon Type: Greataxes',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'spears',
-		'name':'Weapon Type: Spears',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'halberds',
-		'name':'Weapon Type: Halberds',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'hammers',
-		'name':'Weapon Type: Hammers',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'great-hammers',
-		'name':'Weapon Type: Great Hammers',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'daggers',
-		'name':'Weapon Type: Daggers',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
-	},
-	{
-		'id':'gauntlets',
-		'name':'Weapon Type: Gauntlets',
+		'id':'no-craft',
+		'name':'No Crafting',
 		'difficulty':8,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'incompatibilities':['rgo','bgo','ggo'],
+		'description':'Including resockets, recolours and masters.',
+		'types':['equipment-source', 'item-crafting']
 	},
 	{
-		'id':'whips',
-		'name':'Weapon Type: Whips',
+		'id':'recol-only',
+		'name':'Recolour Only',
+		'difficulty':7,
+		'incompatibilities':[],
+		'description':'Only use Chromatic Orbs or equivalent Vorici crafting.',
+		'types':['item-crafting']
+	},
+	{
+		'id':'recol-socket-only',
+		'name':'Socket Changes Only',
+		'difficulty':6,
+		'incompatibilities':[],
+		'description':'Only use socket-changing orbs or equivalent Vorici crafting.',
+		'types':['item-crafting']
+	},
+	{
+		'id':'no-stash',
+		'name':'Pack Mule',
 		'difficulty':8,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'incompatibilities':[],
+		'description':'No using your Stash.',
+		'types':[]
 	},
 	{
-		'id':'bows',
-		'name':'Weapon Type: Bows',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'id':'ci-rush',
+		'name':'CI Rush',
+		'difficulty':8,
+		'incompatibilities':['nuf'],
+		'description':'Path to Chaos Inoculation as quickly as possible.',
+		'types':['keystone-rush']
 	},
 	{
-		'id':'crossbows',
-		'name':'Weapon Type: Crossbows',
-		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'id':'bm-rush',
+		'name':'BM Rush',
+		'difficulty':5,
+		'incompatibilities':[],
+		'description':'Path to Blood Magic as quickly as possible.',
+		'types':['keystone-rush']
 	},
 	{
-		'id':'catalysts',
-		'name':'Weapon Type: Catalysts',
+		'id':'aof-rush',
+		'name':'AoF Rush',
 		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'incompatibilities':[],
+		'description':'Path to Avatar of Fire as quickly as possible.',
+		'types':['keystone-rush']
 	},
 	{
-		'id':'talismans',
-		'name':'Weapon Type: Talismans',
+		'id':'rand-asc',
+		'name':'Two Random Ascendancies',
 		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'incompatibilities':['no-ascend','no-notables'],
+		'description':'As Scion, pick two ascendancy classes at random.',
+		'types':[]
 	},
 	{
-		'id':'pyro-flame',
-		'name':'Weapon Type: Pyromancy Flame',
+		'id':'no-notables',
+		'name':'Might of the Meek Mode',
+		'difficulty':12,
+		'incompatibilities':['rand-asc','3-tree-scion'],
+		'description':'Assign no passive tree Notables',
+		'types':[]
+	},
+	{
+		'id':'3-tree-scion',
+		'name':'Omnidirectional Scion',
+		'difficulty':8,
+		'incompatibilities':['no-notables'],
+		'description':'As Scion, maintain three equally large passive tree paths, connecting to the start in different places.',
+		'types':[]
+	},
+	{
+		'id':'no-npcs',
+		'name':'All Alone',
+		'difficulty':8,
+		'incompatibilities':[],
+		'description':'Speak to NPCs only when required to continue the main quest. No buying, selling, or claiming quest rewards.',
+		'types':['equipment-source','gem-source']
+	}
+];
+
+//These are small additional challenges, less difficult than "main" challenges.
+//They're separated to avoid creating challenge runs entirely of these.
+var bonusChallenges = [
+	{
+		'id':'no-pantheon',
+		'name':'No Pantheon',
+		'difficulty':1,
+		'incompatibilities':[],
+		'description':'Assign no Pantheon bonuses.',
+		'types':[]
+	},
+	{
+		'id':'no-ascend',
+		'name':'No Ascension',
 		'difficulty':4,
-		'description':'You may use only this type of weapon in your right hand.',
-		'types':['rhw']
+		'incompatibilities':['random-asc'],
+		'description':'You can skip the labyrinth, so it balances out.',
+		'types':[]
+	},
+	{
+		'id':'no-masters',
+		'name':'No Masters',
+		'difficulty':2,
+		'incompatibilities':[],
+		'description':'Complete no Forsaken Master missions.',
+		'types':['equipment-source','item-crafting']
+	},
+	{
+		'id':'nmf',
+		'name':'No Mana Flasks',
+		'difficulty':2,
+		'incompatibilities':[],
+		'description':'They probably cause diabetes anyway.',
+		'types':['flask-type']
+	},
+	{
+		'id':'no-respec',
+		'name':'Permanent Assignment',
+		'difficulty':1,
+		'incompatibilities':[],
+		'description':'No respeccing passive nodes.',
+		'types':[]
+	},
+	{
+		'id':'wr-sceptres',
+		'name':'Sceptres Only',
+		'difficulty':3,
+		'incompatibilities':[],
+		'description':'White Mage cosplay?',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-maces',
+		'name':'Maces Only',
+		'difficulty':4,
+		'incompatibilities':[],
+		'description':'Thanks to Sir William Blunt-Instrument for generously allowing us to include this challenge.',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-staves',
+		'name':'Staves Only',
+		'difficulty':2,
+		'incompatibilities':[],
+		'description':'You just can\'t get the staff these days.',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-swords',
+		'name':'Swords Only',
+		'difficulty':4,
+		'incompatibilities':[],
+		'description':'The sharp end goes in the enemy.',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-axes',
+		'name':'Axes Only',
+		'difficulty':3,
+		'incompatibilities':[],
+		'description':'What happened? Axe happened!',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-claws',
+		'name':'Claws Only',
+		'difficulty':4,
+		'incompatibilities':[],
+		'description':'Meow! >X3',
+		'types':['weapon-restriction']
+	},
+	{
+		'id':'wr-daggers',
+		'name':'Daggers Only',
+		'difficulty':1,
+		'incompatibilities':[],
+		'description':'Careful! They\'re sharp.',
+		'types':['weapon-restriction']
+	}
+
+];
+
+//These have some pre-requisite main challenge. Can't roll by themselves
+var dependentChallenges = [
+	{
+		'id':'act-skill-succ-1',
+		'name':'Three Active Skills Succession',
+		'difficulty':8,
+		'incompatibilities':[],
+		'prerequisiteIds':['found-go'],
+		'prerequisiteTypes':[],
+		'description':'After the third active skill gem, each new one found replaces the oldest.',
+		'types':[]
+	},
+	{
+		'id':'act-skill-succ-2',
+		'name':'Two Active Skill Succession',
+		'difficulty':12,
+		'incompatibilities':[],
+		'prerequisiteIds':['found-go'],
+		'prerequisiteTypes':[],
+		'description':'After the second active skill gem, each new one found replaces the oldest.',
+		'types':[]
+	},
+	{
+		'id':'item-clobber',
+		'name':'Clobber On',
+		'difficulty':8,
+		'incompatibilities':[],
+		'prerequisiteIds':['uio'],
+		'prerequisiteTypes':[],
+		'description':'Gear replaces previous in slot.',
+		'types':[]
 	}
 ];

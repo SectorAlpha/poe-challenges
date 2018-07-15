@@ -1,114 +1,243 @@
 'use strict';
 
+/*
+Requirements for PoE:
+
+-Pick at least one "substantial" challenge and some number of additional challenges
+or extras
+-No picking multiple challenges of the same type, to avoid unresovable conflicts
+-
+
+*/
+
+
 var resultCount = 0;
 
-$(function(){
-    var modElem;
+//Init lists of challenges and types that are prerequisites to dependent challenges
+var extendableChallengeIds = []
+var extendableChallengeTypes = []
+for(var tIter = 0; tIter < dependentChallenges.length; tIter++) {
+    extendableChallengeIds = extendableChallengeIds.concat(dependentChallenges[tIter].prerequisiteIds);
+    extendableChallengeTypes = extendableChallengeTypes.concat(dependentChallenges[tIter].prerequisiteTypes);
+}
+//These lists might in theory have repeats. Doesn't matter much.
 
-    for(var i = 0; i < modifiers.length; i++) {
-        modElem = '<li><label>' + modifiers[i].name + '</label></li>';
-        if(modifiers[i].name.indexOf('Weapon Type:') >= 0) {
-            $('#mods3').append(modElem);
-        } else if(modifiers[i].name.indexOf('Class:') >= 0 || modifiers[i].name.indexOf('Max Level:') >= 0 || modifiers[i].name.indexOf('Cosplay:') >= 0) {
-            $('#mods2').append(modElem);
-        } else {
-            $('#mods1').append(modElem);
+// Apparently this is a jquery thing
+$(function(){
+    var chalElem;
+
+    //Interate over the total array of challenge objects defined in data.js
+    for(var i = 0; i < challenges.length; i++) {
+
+        //Create a string of an html list item labelled with the challenge's name
+        chalElem = '<li><label>' + challenges[i].name + '</label></li>';
+
+        //If "Weapon Type:" is in the challenge name
+        if(challenges[i].name.indexOf('Weapon Type:') >= 0) {
+            //jquery call: append the chalElem created above to "#chals3"
+            $('#chals3').append(chalElem);
+        }
+        //If "Class" or "Max Level:" or "Cosplay:" is in the challenge name
+        else if(challenges[i].name.indexOf('Class:') >= 0 || challenges[i].name.indexOf('Max Level:') >= 0 || challenges[i].name.indexOf('Cosplay:') >= 0) {
+            $('#chals2').append(chalElem);
+        }
+        else {
+            $('#chals1').append(chalElem);
         }
     }
+    //End of loop
 
+    //Iter over the contents of the set of difficulties
     for(var key in difficulties) {
         var $option = $('<option value="' + key + '">' + difficulties[key] + '</option>');
-        if (difficulties[key] === 'Experienced') {
+        if (difficulties[key] === 'Harder') {
             $option.attr('selected', 'selected');
         }
-        $('#modDifficulty').append($option);
+        $('#chalDifficulty').append($option);
     }
 
-    $('#toggleMods').click(function(){
-        $('#modifiers').slideToggle();
+    $('#togglechals').click(function(){
+        $('#challenges').slideToggle();
     });
 });
 
+//The all-important function that selects challenges
 function randomize() {
-    var chosenMods = [];
+    //performance takes a hit but need to add to this array later
+    var availChals = challenges.slice()
+    var chosenChals = [];
     var chosenTypes = [];
+    var excludedChals = [];
     var randNums = [];
-    var randNum, mod, chosenDifficulty, difficultyTotal, difficultyOkay, typesOkay;
+    var difficultyTotal = 0;
     var iterLimit = 10000;
-    difficultyTotal = 0;
-    chosenDifficulty = parseInt($('#modDifficulty').val());
+    var bonusActive = false
+    var randNum, chal, chosenDifficulty, difficultyOkay, typesOkay, compatOkay, chosenChal;
+
+    chosenDifficulty = parseInt($('#chalDifficulty').val());
+    console.log("Chosen difficulty is " + chosenDifficulty)
+
     resultCount++;
-    
+
     $('#output').prepend('<div id="cr' + resultCount + '" class="cr-result"><b>Challenge Run #' + resultCount + ':</b><ul></ul></div>');
 
+    //While we haven't exceeded the iteration limit
     for(var x = 0; x < iterLimit; x++) {
         typesOkay = true;
+        compatOkay = true;
         difficultyOkay = true;
-        randNum = Math.floor((Math.random() * modifiers.length));
+
+        //Random index of challenges
+        randNum = Math.floor((Math.random() * availChals.length));
+
+        //If the random number has NOT already been selected
         if($.inArray(randNum, randNums) < 0) {
-            for(var tIter = 0; tIter < modifiers[randNum].types.length; tIter++) { // mod currently being tested
-                if($.inArray(modifiers[randNum].types[tIter], chosenTypes) >= 0) { // check each type against the types already selected
+            chosenChal = availChals[randNum]
+            //Check that the type has not already been selected
+            for(var tIter = 0; tIter < chosenChal.types.length; tIter++) {
+                if($.inArray(chosenChal.types[tIter], chosenTypes) >= 0) {
                     typesOkay = false;
                     break;
                 }
             }
 
-            if((difficultyTotal + parseInt(modifiers[randNum].difficulty)) > chosenDifficulty)
+            //Check that the difficulty hasn't exceeded the limit
+            if((difficultyTotal + parseInt(chosenChal.difficulty)) > chosenDifficulty){
                 difficultyOkay = false;
+            }
 
-            if(typesOkay && difficultyOkay) {
+            //Check that the id of the challenge doesn't match any ids that have been excluded by previous challenges
+            if($.inArray(chosenChal.id, excludedChals) >= 0) {
+                compatOkay = false;
+            }
+
+
+            if(typesOkay && difficultyOkay && compatOkay) {
+                //Add the random number to the randNum list and the challenge to the challenge list & increment the total difficulty
                 randNums.push(randNum);
-                chosenMods.push(modifiers[randNum]);
-                difficultyTotal += modifiers[randNum].difficulty;
-                for(var tIter = 0; tIter < modifiers[randNum].types.length; tIter++)
-                    chosenTypes.push(modifiers[randNum].types[tIter]);
+                chosenChals.push(chosenChal);
+                difficultyTotal += chosenChal.difficulty;
+
+                //Find out if the chosen challenge can be extended
+                var extendable = false;
+                if($.inArray(chosenChal.id, extendableChallengeIds) >= 0){
+                    extendable = true;
+                }
+                else {
+                    for(var tIter = 0; tIter < chosenChal.types.length; tIter++){
+                        if($.inArray(chosenChal.types[tIter], extendableChallengeTypes) >= 0){
+                            extendable = true;
+                        }
+                    }
+                }
+                //If the chosen challenge can be extended, find out what extensions are possible.
+                //TODO
+                if (extendable) {
+                    var possibleExtensions = [];
+                    for(var tIter = 0; tIter < dependentChallenges.length; tIter++){
+                        var depen = dependentChallenges[tIter];
+
+                        difficultyOkay = true;
+                        typesOkay = true;
+                        compatOkay = true;
+
+                        //Same three checks as above
+                        //TODO make these separate functions for elegance
+                        for(var tIter = 0; tIter < chosenChal.types.length; tIter++) {
+                            if($.inArray(chosenChal.types[tIter], chosenTypes) >= 0) {
+                                typesOkay = false;
+                                break;
+                            }
+                        }
+                        if((difficultyTotal + parseInt(chosenChal.difficulty)) > chosenDifficulty){
+                            difficultyOkay = false;
+                        }
+                        if($.inArray(chosenChal.id, excludedChals) >= 0) {
+                            compatOkay = false;
+                        }
+
+                        if (typesOkay && difficultyOkay && compatOkay){
+                            if ($.inArray(chosenChal.id, depen.prerequisiteIds) >= 0 ) {
+                                possibleExtensions.push(depen);
+                            }
+                            for(var uIter = 0; uIter < chosenChal.types.length; uIter++) {
+                                if ($.inArray(chosenChal.types[uIter], depen.prerequisiteIds) >= 0 ) {
+                                    possibleExtensions.push(depen);
+                                }
+                            }
+                        }
+                    }
+                    if (possibleExtensions.length >= 1){
+                        //Multiply by constant to include the failure chance
+                        roll = Math.floor(2*Math.random()*possibleExtensions.length)
+                        if (roll < possibleExtensions.length) {
+                            chosenChals.push(possibleExtensions[roll]);
+                            difficultyTotal += possibleExtensions[roll].difficulty;
+                        }
+                    }
+
+                }
+
+
+                //Put each of the challenge's types into the chosen types
+                chosenTypes = chosenTypes.concat(chosenChal.types)
+
+                //Put each of the challenge's exclusions into the excluded list
+                excludedChals = excludedChals.concat(chosenChal.incompatibilities)
+
             }
         }
 
-        if(difficultyTotal == chosenDifficulty) {
+        //allow a little wiggle-room
+        if(difficultyTotal == chosenDifficulty || difficultyTotal == chosenDifficulty -1) {
             // at this point everything has been satisfied, the run has been created and we're ready to display the results
             console.debug("difficultyTotal: " + difficultyTotal);
             console.debug("chosenDifficulty: " + chosenDifficulty);
             break;
+
+        //If there's only a little room to spare, allow Bonus Challenges to roll
+        } else if (chosenDifficulty - difficultyTotal < 4 && !bonusActive) {
+            availChals = availChals.concat(bonusChallenges);
+            bonusActive = true;
         }
 
         if(x == iterLimit-1) {
-            //console.log("Randomization iteration limit exceeded.");
+            console.log("Randomization iteration limit reached.");
         }
+        //else continue
     }
+    //End loop
 
-    for(var i = 0; i < chosenMods.length; i++) {
-        mod = chosenMods[i];
+    //iterate over the chosen challenges
+    for(var i = 0; i < chosenChals.length; i++) {
+        chal = chosenChals[i];
 
-        $('#cr' + resultCount + ' ul').append('<li class="' + getDifficultyClass(mod.difficulty) + '"><span data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false" tabindex="' + i + '" title="' + (mod.description || 'Self explanatory.') + '">' + mod.name + '</span></li>');
+        $('#cr' + resultCount + ' ul').append('<li class="' + getDifficultyClass(chal.difficulty) + '"><span data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false" tabindex="' + i + '" title="' + (chal.description || 'Self explanatory.') + '">' + chal.name + '</span></li>');
     }
     $('#cr' + resultCount).hide().slideDown();
 
     $(document).foundation();
 
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'button',
-        eventAction: 'click',
-        eventLabel: 'randomize'
-    });
 }
 
+//This gets the difficulty class for the css to assign formatting to
+//(Presently, only colour is altered, and only difficulty matters)
+//optional TODO: find a way to directly convert difficulty to colour, like a heatmap
 function getDifficultyClass(diffVal) {
-    switch(diffVal) {
-        case 2:
-            return "easy";
-            break;
-        case 4:
-            return "medium";
-            break;
-        case 8:
-            return "hard";
-            break;
-        case 16:
-            return "insane";
-            break;
-        default:
-            return "";
+
+    if (diffVal <= 4){
+        return "easy";
+    }
+    else if (diffVal <= 8){
+        return "medium"
+    }
+    else if (diffVal <= 14){
+        return "hard"
+    }
+    else if (diffVal <= 20){
+        return "vhard"
+    }
+    else {
+        return "vvhard"
     }
 }

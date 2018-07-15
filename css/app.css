@@ -11,7 +11,7 @@ h1,h2,h3,h4,h5,p,div,ul,li,table,tr,td,label,input {
 	color: #ccc;
 }
 
-ul { 
+ul {
 	margin: 0 0 10px 0;
 	padding: 0;
 }
@@ -29,7 +29,7 @@ li {
 }
 
 .menu-text {
-	font-family: 'OptimusPrinceps', Arial, Helvetica, sans-serif;
+	font-family: 'Fontin', Arial, Helvetica, sans-serif;
     font-size: 1.6em;
     line-height: 0.6em;
 }
@@ -39,13 +39,13 @@ li {
     outline: none;
 }
 
-.bonfire {
+.beach {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
     bottom: 60px;
     border: 0;
-    opacity: 0.2;
+    opacity: 0.5;
 }
 
 #content {
@@ -83,6 +83,20 @@ footer {
 	padding: 10px;
 	z-index: 1;
 	background: #121212;
+}
+.left {
+    float: left;
+    width: 25%;
+    text-align: left;
+}
+.right {
+    float: right;
+    width: 25%;
+    text-align: right;
+}
+.centered {
+    text-align: center;
+    overflow: hidden; /* claim the left over width between these 25% floats */
 }
 
 .cr-result {
@@ -123,9 +137,13 @@ footer {
 	background: #f08a24;
 	border-color: #de770f;
 }
-.cr-result li.insane {
+.cr-result li.vhard {
 	background: #ff4a14;
 	border-color: #ee3706;
+}
+.cr-result li.vvhard {
+	background: #f114ff;
+	border-color: #a800b3;
 }
 
 #modifiers {
