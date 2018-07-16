@@ -234,7 +234,7 @@ var challenges = [
 		'id':'ci-rush',
 		'name':'CI Rush',
 		'difficulty':8,
-		'incompatibilities':['nuf'],
+		'incompatibilities':['nuf','3-tree-scion'],
 		'description':'Path to Chaos Inoculation as quickly as possible.',
 		'types':['keystone-rush']
 	},
@@ -242,7 +242,7 @@ var challenges = [
 		'id':'bm-rush',
 		'name':'BM Rush',
 		'difficulty':5,
-		'incompatibilities':[],
+		'incompatibilities':['3-tree-scion'],
 		'description':'Path to Blood Magic as quickly as possible.',
 		'types':['keystone-rush']
 	},
@@ -250,7 +250,7 @@ var challenges = [
 		'id':'aof-rush',
 		'name':'AoF Rush',
 		'difficulty':4,
-		'incompatibilities':[],
+		'incompatibilities':['3-tree-scion'],
 		'description':'Path to Avatar of Fire as quickly as possible.',
 		'types':['keystone-rush']
 	},
@@ -274,7 +274,7 @@ var challenges = [
 		'id':'3-tree-scion',
 		'name':'Omnidirectional Scion',
 		'difficulty':8,
-		'incompatibilities':['no-notables'],
+		'incompatibilities':['no-notables','ci-rush','bm-rush','aof-rush'],
 		'description':'As Scion, maintain three equally large passive tree paths, connecting to the start in different places.',
 		'types':[]
 	},
@@ -404,7 +404,7 @@ var dependentChallenges = [
 	},
 	{
 		'id':'act-skill-succ-2',
-		'name':'Two Active Skill Succession',
+		'name':'Two Active Skills Succession',
 		'difficulty':12,
 		'incompatibilities':[],
 		'prerequisiteIds':['found-go'],

@@ -63,6 +63,7 @@ $(function(){
 
 //The all-important function that selects challenges
 function randomize() {
+    console.log("--Getting new challenge set--")
     //performance takes a hit but need to add to this array later
     var availChals = challenges.slice()
     var chosenChals = [];
@@ -83,12 +84,17 @@ function randomize() {
 
     //While we haven't exceeded the iteration limit
     for(var x = 0; x < iterLimit; x++) {
+        //console.log("Iteration " + (x+1))
         typesOkay = true;
         compatOkay = true;
         difficultyOkay = true;
 
         //Random index of challenges
         randNum = Math.floor((Math.random() * availChals.length));
+
+        // if (x == 0){
+        //     randNum=10
+        // }
 
         //If the random number has NOT already been selected
         if($.inArray(randNum, randNums) < 0) {
@@ -114,6 +120,7 @@ function randomize() {
 
             if(typesOkay && difficultyOkay && compatOkay) {
                 //Add the random number to the randNum list and the challenge to the challenge list & increment the total difficulty
+                console.log("Adding challenge "+ chosenChal.id)
                 randNums.push(randNum);
                 chosenChals.push(chosenChal);
                 difficultyTotal += chosenChal.difficulty;
@@ -133,9 +140,11 @@ function randomize() {
                 //If the chosen challenge can be extended, find out what extensions are possible.
                 //TODO
                 if (extendable) {
+                    //console.log("Attempting to extend " + chosenChal.id)
                     var possibleExtensions = [];
                     for(var tIter = 0; tIter < dependentChallenges.length; tIter++){
                         var depen = dependentChallenges[tIter];
+                        //console.log("Checking dependent challenge " + depen.id)
 
                         difficultyOkay = true;
                         typesOkay = true;
@@ -143,8 +152,8 @@ function randomize() {
 
                         //Same three checks as above
                         //TODO make these separate functions for elegance
-                        for(var tIter = 0; tIter < chosenChal.types.length; tIter++) {
-                            if($.inArray(chosenChal.types[tIter], chosenTypes) >= 0) {
+                        for(var uIter = 0; uIter < chosenChal.types.length; uIter++) {
+                            if($.inArray(chosenChal.types[vIter], chosenTypes) >= 0) {
                                 typesOkay = false;
                                 break;
                             }
@@ -157,19 +166,24 @@ function randomize() {
                         }
 
                         if (typesOkay && difficultyOkay && compatOkay){
+                            //console.log("Dependent challenge " + depen.id + " suitable, checking if correct.")
                             if ($.inArray(chosenChal.id, depen.prerequisiteIds) >= 0 ) {
                                 possibleExtensions.push(depen);
                             }
-                            for(var uIter = 0; uIter < chosenChal.types.length; uIter++) {
-                                if ($.inArray(chosenChal.types[uIter], depen.prerequisiteIds) >= 0 ) {
+                            for(var vIter = 0; vIter < chosenChal.types.length; vIter++) {
+                                if ($.inArray(chosenChal.types[vIter], depen.prerequisiteTypes) >= 0 ) {
                                     possibleExtensions.push(depen);
                                 }
                             }
                         }
+                        else {
+                            //console.log("Dependent challenge " + depen.id + " unsuitable")
+                        }
                     }
                     if (possibleExtensions.length >= 1){
+                        //console.log("possible extensions available, rolling to use")
                         //Multiply by constant to include the failure chance
-                        roll = Math.floor(2*Math.random()*possibleExtensions.length)
+                        var roll = Math.floor(2*Math.random()*possibleExtensions.length)
                         if (roll < possibleExtensions.length) {
                             chosenChals.push(possibleExtensions[roll]);
                             difficultyTotal += possibleExtensions[roll].difficulty;
