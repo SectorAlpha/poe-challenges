@@ -242,7 +242,7 @@ function getDifficultyClass(challenge) {
         return "vvhard"
     }
 
-    diffVal = challenge.difficulty
+    var diffVal = challenge.difficulty
     if (diffVal <= 4){
         return "easy";
     }
