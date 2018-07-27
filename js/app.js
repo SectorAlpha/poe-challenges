@@ -226,7 +226,7 @@ function randomize() {
     for(var i = 0; i < chosenChals.length; i++) {
         chal = chosenChals[i];
 
-        $('#cr' + resultCount + ' ul').append('<li class="' + getDifficultyClass(chal.difficulty) + '"><span data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false" tabindex="' + i + '" title="' + (chal.description || 'Self explanatory.') + '">' + chal.name + '</span></li>');
+        $('#cr' + resultCount + ' ul').append('<li class="' + getDifficultyClass(chal) + '"><span data-tooltip aria-haspopup="true" class="has-tip top" data-disable-hover="false" tabindex="' + i + '" title="' + (chal.description || 'Self explanatory.') + '">' + chal.name + '</span></li>');
     }
     $('#cr' + resultCount).hide().slideDown();
 
