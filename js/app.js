@@ -237,21 +237,25 @@ function randomize() {
 //This gets the difficulty class for the css to assign formatting to
 //(Presently, only colour is altered, and only difficulty matters)
 //optional TODO: find a way to directly convert difficulty to colour, like a heatmap
-function getDifficultyClass(diffVal) {
+function getDifficultyClass(challenge) {
+    if (challenge.id == 'no-fish'){
+        return "vvhard"
+    }
 
+    diffVal = challenge.difficulty
     if (diffVal <= 4){
         return "easy";
     }
     else if (diffVal <= 8){
-        return "medium"
+        return "medium";
     }
     else if (diffVal <= 14){
-        return "hard"
+        return "hard";
     }
     else if (diffVal <= 20){
-        return "vhard"
+        return "vhard";
     }
     else {
-        return "vvhard"
+        return "vvhard";
     }
 }
