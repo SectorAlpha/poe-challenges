@@ -10,7 +10,7 @@ var challenges = [
 		'id':'no-offhand',
 		'name':'One-Armed Exile',
 		'difficulty':6,
-		'incompatibilities':[],
+		'incompatibilities':['weapon-gems'],
 		'description':'One-handers only, no shield, no dual-wielding',
 		'types':['weapon-restriction']
 	},
@@ -18,7 +18,7 @@ var challenges = [
 		'id':'unarmed',
 		'name':'Unarmed',
 		'difficulty':15,
-		'incompatibilities':[],
+		'incompatibilities':['no-helpers'],
 		'description':'A quiver is okay.',
 		'types':['weapon-restriction']
 	},
@@ -281,10 +281,50 @@ var challenges = [
 	{
 		'id':'no-npcs',
 		'name':'All Alone',
-		'difficulty':8,
+		'difficulty':6,
 		'incompatibilities':[],
 		'description':'Speak to NPCs only when required to continue the main quest. No buying, selling, or claiming quest rewards.',
 		'types':['equipment-source','gem-source']
+	},
+	{
+		'id':'gear-rs',
+		'name':'Actlock',
+		'difficulty':6,
+		'incompatibilities':[],
+		'description':'Discard all gear and gems at the start of each new act.',
+		'types':[]
+	},
+	{
+		'id':'col-bal',
+		'name':'Chroma Balance',
+		'difficulty':4,
+		'incompatibilities':[],
+		'description':'Maintain an equal number of each colour of gems.',
+		'types':['gem-colour']
+	},
+	{
+		'id':'corrupt-only',
+		'name':'Big Vaals',
+		'difficulty':10,
+		'incompatibilities':[],
+		'description':'Equip corrupted gear only. Good luck with Brutus!',
+		'types':[]
+	},
+	{
+		'id':'bad-base',
+		'name':'Shabby Jerkin Mode',
+		'difficulty':8,
+		'incompatibilities':[],
+		'description':'Use gear of only the worst base type in each category.',
+		'types':[]
+	},
+	{
+		'id':'weapon-gems',
+		'name':'Materia Girl/Guy',
+		'difficulty':6,
+		'incompatibilities':['no-offhand'],
+		'description':'Socket gems only in weapons.',
+		'types':[]
 	}
 ];
 
@@ -386,6 +426,38 @@ var bonusChallenges = [
 		'incompatibilities':[],
 		'description':'Careful! They\'re sharp.',
 		'types':['weapon-restriction']
+	},
+	{
+		'id':'no-helpers',
+		'name':'DIY Mode',
+		'difficulty':2,
+		'incompatibilities':['unarmed'],
+		'description':'No Totems, Golems or other minions.',
+		'types':[]
+	},
+	{
+		'id':'no-auras',
+		'name':'No Auras',
+		'difficulty':2,
+		'incompatibilities':[],
+		'description':'The reiki class will have to wait.',
+		'types':[]
+	},
+	{
+		'id':'no-heralds',
+		'name':'No Heralds',
+		'difficulty':1,
+		'incompatibilities':[],
+		'description':'Face the Everstorm alone.',
+		'types':[]
+	},
+	{
+		'id':'no-fish',
+		'name':'No Fishing',
+		'difficulty':1,
+		'incompatibilities':[],
+		'description':'Is this even possible?',
+		'types':[]
 	}
 
 ];
