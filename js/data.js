@@ -212,7 +212,7 @@ var challenges = [
 		'difficulty':7,
 		'incompatibilities':[],
 		'description':'Only use Chromatic Orbs or equivalent Vorici crafting.',
-		'types':['item-crafting']
+		'types':['equipment-source', 'item-crafting']
 	},
 	{
 		'id':'recol-socket-only',
@@ -220,7 +220,7 @@ var challenges = [
 		'difficulty':6,
 		'incompatibilities':[],
 		'description':'Only use socket-changing orbs or equivalent Vorici crafting.',
-		'types':['item-crafting']
+		'types':['equipment-source', 'item-crafting']
 	},
 	{
 		'id':'no-stash',
@@ -308,7 +308,7 @@ var challenges = [
 		'difficulty':10,
 		'incompatibilities':[],
 		'description':'Equip corrupted gear only. Good luck with Brutus!',
-		'types':[]
+		'types':['equipment-source']
 	},
 	{
 		'id':'bad-base',
@@ -316,7 +316,7 @@ var challenges = [
 		'difficulty':8,
 		'incompatibilities':[],
 		'description':'Use gear of only the worst base type in each category.',
-		'types':[]
+		'types':['equipment-source']
 	},
 	{
 		'id':'weapon-gems',
