@@ -90,7 +90,7 @@ var challenges = [
 		'id':'uio',
 		'name':'Gucci Hobo',
 		'difficulty':16,
-		'incompatibilities':['illiterate'],
+		'incompatibilities':[],
 		'description':'Unique items only, not including flasks',
 		'types':['equipment-rarity']
 	},
@@ -194,7 +194,7 @@ var challenges = [
 		'id':'illiterate',
 		'name':'Illiterate Exile',
 		'difficulty':11,
-		'incompatibilities':['uio'],
+		'incompatibilities':[],
 		'description':'No using Wisdom Scrolls, Portal Scrolls or Books.',
 		'types':['equipment-source']
 	},
@@ -211,7 +211,7 @@ var challenges = [
 		'name':'Recolour Only',
 		'difficulty':7,
 		'incompatibilities':[],
-		'description':'No crafting except to change socket colours (by orbs or Vorici).',
+		'description':'Only use Chromatic Orbs or equivalent Vorici crafting.',
 		'types':['equipment-source', 'item-crafting']
 	},
 	{
@@ -219,7 +219,7 @@ var challenges = [
 		'name':'Socket Changes Only',
 		'difficulty':6,
 		'incompatibilities':[],
-		'description':'No crafting except to change sockets (colours, number, links, using orbs or Vorici).',
+		'description':'Only use socket-changing orbs or equivalent Vorici crafting.',
 		'types':['equipment-source', 'item-crafting']
 	},
 	{
@@ -281,7 +281,7 @@ var challenges = [
 	{
 		'id':'no-npcs',
 		'name':'All Alone',
-		'difficulty':9,
+		'difficulty':6,
 		'incompatibilities':[],
 		'description':'Speak to NPCs only when required to continue the main quest. No buying, selling, or claiming quest rewards.',
 		'types':['equipment-source','gem-source']
@@ -292,7 +292,7 @@ var challenges = [
 		'difficulty':6,
 		'incompatibilities':[],
 		'description':'Discard all gear and gems at the start of each new act.',
-		'types':['equipment-source']
+		'types':[]
 	},
 	{
 		'id':'col-bal',
