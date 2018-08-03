@@ -291,7 +291,7 @@ var challenges = [
 		'name':'Actlock',
 		'difficulty':6,
 		'incompatibilities':[],
-		'description':'Discard all gear and gems at the start of each new act.',
+		'description':'Discard all gear and gems at the start of each new act, or on reaching town in act 5.',
 		'types':['equipment-source']
 	},
 	{
